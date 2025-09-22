@@ -13,7 +13,7 @@ function AppLayout() {
 	}, [danger])
 
 	return (
-		<div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', minHeight: '100vh' }}>
+		<div className="app-grid" style={{ minHeight: '100vh' }}>
 			<aside className={`sidebar ${open ? 'open' : ''}`} style={{ color: 'white', padding: '16px 12px' }}>
 				<div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
 					<img src="/viper-logo.svg" alt="Viper Treasury" width={28} height={28} />
@@ -24,6 +24,7 @@ function AppLayout() {
 					<NavLink to="/allocation" className={({ isActive }) => isActive ? 'active' : ''}><span>📈</span><span>Allocation</span></NavLink>
 					<NavLink to="/agents" className={({ isActive }) => isActive ? 'active' : ''}><span>🤖</span><span>Agents</span></NavLink>
 					<NavLink to="/reports" className={({ isActive }) => isActive ? 'active' : ''}><span>🧾</span><span>Reports</span></NavLink>
+					<NavLink to="/scenario" className={({ isActive }) => isActive ? 'active' : ''}><span>🧪</span><span>Scenario</span></NavLink>
 				</nav>
 			</aside>
 			<main>
@@ -33,7 +34,7 @@ function AppLayout() {
 						<img src="/viper-logo.svg" alt="Viper Treasury" width={22} height={22} className="show-on-mobile" />
 						<div className="gradient-text hide-on-mobile" style={{ fontWeight: 700 }}>Viper Treasury Console</div>
 					</div>
-					<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+					<div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
 						<button className="btn" onClick={() => setDanger((d) => !d)}>{danger ? 'Calm Mode' : 'Danger Mode'}</button>
 						<ConnectButton label="Connect Wallet" showBalance={false} accountStatus={{ smallScreen: 'avatar', largeScreen: 'full' }} />
 					</div>

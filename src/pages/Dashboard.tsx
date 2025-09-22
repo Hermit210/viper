@@ -1,13 +1,16 @@
+import { useEffect } from 'react'
 import { useTreasuryStore } from '../store/treasuryStore'
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts'
 import { useAccount, useChainId, useBalance } from 'wagmi'
 import OnchainBalances from '../components/OnchainBalances'
 
 function Dashboard() {
-	const { kpis, navHistory } = useTreasuryStore()
+	const { kpis, navHistory, risk, forecasts, computeAnalytics } = useTreasuryStore()
 	const { address, isConnected } = useAccount()
 	const chainId = useChainId()
 	const { data: nativeBalance } = useBalance({ address, chainId, query: { enabled: Boolean(address) } })
+
+	useEffect(() => { computeAnalytics() }, [computeAnalytics])
 
 	return (
 		<div style={{ color: 'white' }}>
@@ -67,6 +70,31 @@ function Dashboard() {
 						<Line type="monotone" dataKey="nav" stroke="#60a5fa" strokeWidth={2} dot={false} />
 					</LineChart>
 				</ResponsiveContainer>
+			</div>
+
+			<div className="grid-2" style={{ marginTop: 12 }}>
+				<div className="panel" style={{ padding: 12 }}>
+					<div style={{ fontWeight: 600, marginBottom: 8 }}>Risk Exposure</div>
+					<ul>
+						{Object.entries(risk.byAssetPct).map(([sym, pct]) => (
+							<li key={sym} className="subtle" style={{ fontSize: 14 }}>{sym}: {pct.toFixed(2)}%</li>
+						))}
+					</ul>
+					<div className="subtle" style={{ fontSize: 12 }}>Volatility: {risk.volatilityPct.toFixed(2)}%</div>
+				</div>
+				<div className="panel" style={{ padding: 12 }}>
+					<div style={{ fontWeight: 600, marginBottom: 8 }}>Forecasts</div>
+					<ResponsiveContainer width="100%" height={200}>
+						<AreaChart data={forecasts}>
+							<XAxis dataKey="date" stroke="#93a3b8"/>
+							<YAxis stroke="#93a3b8"/>
+							<Tooltip contentStyle={{ background: '#0d1324', border: '1px solid rgba(96,165,250,0.2)', color: '#e5e7eb' }} />
+							<Area type="monotone" dataKey="low" stroke="#ef4444" fill="#ef4444" fillOpacity={0.15} />
+							<Area type="monotone" dataKey="high" stroke="#22d3ee" fill="#22d3ee" fillOpacity={0.15} />
+							<Line type="monotone" dataKey="mean" stroke="#60a5fa" strokeWidth={2} dot={false} />
+						</AreaChart>
+					</ResponsiveContainer>
+				</div>
 			</div>
 
 			{isConnected && (

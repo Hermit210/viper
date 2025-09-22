@@ -2,7 +2,7 @@ import Papa from 'papaparse'
 import { useTreasuryStore } from '../store/treasuryStore'
 
 function Reports() {
-	const { transactions } = useTreasuryStore()
+	const { transactions, anomalies } = useTreasuryStore()
 
 	function exportCsv() {
 		const csv = Papa.unparse(transactions)
@@ -19,6 +19,18 @@ function Reports() {
 	return (
 		<div style={{ color: 'white' }}>
 			<h2 className="brand" style={{ marginTop: 0 }}>Reports</h2>
+			{anomalies.length > 0 && (
+				<div className="panel" style={{ padding: 12, marginBottom: 12 }}>
+					<div style={{ fontWeight: 600, marginBottom: 6 }}>Alerts</div>
+					<ul>
+						{anomalies.map((a) => (
+							<li key={a.id} style={{ margin: '6px 0', fontSize: 14 }}>
+								<span style={{ color: '#ef4444' }}>[{a.kind}]</span> {a.message}
+							</li>
+						))}
+					</ul>
+				</div>
+			)}
 			<div className="panel" style={{ padding: 12 }}>
 				<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 					<div style={{ fontWeight: 600 }}>Transaction History</div>

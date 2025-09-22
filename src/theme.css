@@ -218,3 +218,14 @@
 	50% { transform: translateY(-12px); }
 	100% { transform: translateY(0); }
 }
+
+.app-grid { display: grid; grid-template-columns: 240px 1fr; }
+@media (max-width: 900px) { .app-grid { grid-template-columns: 1fr; } .sidebar { position: fixed; } .topbar { position: sticky; top: 0; z-index: 20; } }
+
+/* Mobile typography and spacing tweaks */
+@media (max-width: 600px) {
+	.hero-title { font-size: 22px; }
+	.kpi .value { font-size: 18px; }
+	.page { padding: 12px !important; }
+	.nav a { padding: 10px; }
+}

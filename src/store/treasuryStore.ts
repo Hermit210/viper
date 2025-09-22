@@ -40,6 +40,12 @@ export type PolicyDecision = {
 	actions: { type: 'REBALANCE' | 'REDUCE' | 'INCREASE' | 'HOLD'; asset?: string; deltaPct?: number; reason: string }[]
 }
 
+export type ForecastPoint = { date: string; mean: number; low: number; high: number }
+export type RiskMetrics = { byAssetPct: Record<string, number>; volatilityPct: number }
+export type Anomaly = { id: string; date: number; kind: 'TX_LARGE' | 'AUM_JUMP'; message: string }
+export type ScenarioConfig = { assetDropPct: number; expenseRisePct: number }
+export type ScenarioResult = { projectedAUM: number; notes: string[] }
+
 type TreasuryState = {
 	assets: Asset[]
 	targetAllocation: Record<string, number>
@@ -52,6 +58,16 @@ type TreasuryState = {
 	policyConfig: PolicyConfig
 	policyLog: PolicyDecision[]
 
+	// Analytics
+	forecasts: ForecastPoint[]
+	risk: RiskMetrics
+	anomalies: Anomaly[]
+	scenario: ScenarioConfig
+	scenarioResult?: ScenarioResult
+
+	// Auth (simple demo)
+	isAuthenticated: boolean
+
 	setAgentConfig: (cfg: AgentConfig) => void
 	setPolicyConfig: (cfg: PolicyConfig) => void
 	setTargetAllocation: (next: Record<string, number>) => void
@@ -60,9 +76,13 @@ type TreasuryState = {
 	refreshSuggestions: () => void
 	simulateRebalance: () => void
 	runPolicy: () => void
+	computeAnalytics: () => void
+	runScenario: () => void
+	login: (password: string) => boolean
+	logout: () => void
 }
 
-const initialState: Omit<TreasuryState, 'setAgentConfig' | 'setPolicyConfig' | 'setTargetAllocation' | 'exportConfig' | 'importConfig' | 'refreshSuggestions' | 'simulateRebalance' | 'runPolicy'> = {
+const initialState: Omit<TreasuryState, 'setAgentConfig' | 'setPolicyConfig' | 'setTargetAllocation' | 'exportConfig' | 'importConfig' | 'refreshSuggestions' | 'simulateRebalance' | 'runPolicy' | 'computeAnalytics' | 'runScenario' | 'login' | 'logout'> = {
 	assets: [
 		{ symbol: 'USDC', valueUSD: 200000, currentPct: 40 },
 		{ symbol: 'ETH', valueUSD: 180000, currentPct: 36 },
@@ -86,6 +106,11 @@ const initialState: Omit<TreasuryState, 'setAgentConfig' | 'setPolicyConfig' | '
 	],
 	policyConfig: { minStableReservePct: 20, maxSingleAssetPct: 40 },
 	policyLog: [],
+	forecasts: [],
+	risk: { byAssetPct: {}, volatilityPct: 0 },
+	anomalies: [],
+	scenario: { assetDropPct: 10, expenseRisePct: 5 },
+	isAuthenticated: true,
 }
 
 const persistKey = 'dao_treasury_state_v1'
@@ -198,11 +223,75 @@ export const useTreasuryStore = create<TreasuryState>((set, get) => ({
 		set({ policyLog: [decision, ...state.policyLog].slice(0, 20) })
 		save()
 	},
+
+	computeAnalytics: () => {
+		const state = get()
+		// Risk metrics
+		const total = state.assets.reduce((s, a) => s + a.valueUSD, 0)
+		const byAssetPct: Record<string, number> = {}
+		state.assets.forEach(a => { byAssetPct[a.symbol] = (a.valueUSD / total) * 100 })
+		// Volatility from navHistory last 14 days
+		const nav = state.navHistory.map(n => n.nav)
+		const returns: number[] = []
+		for (let i = 1; i < nav.length; i++) returns.push((nav[i] - nav[i-1]) / nav[i-1])
+		const mean = returns.reduce((s, r) => s + r, 0) / Math.max(returns.length, 1)
+		const varc = returns.reduce((s, r) => s + (r - mean) * (r - mean), 0) / Math.max(returns.length, 1)
+		const volatilityPct = Math.sqrt(varc) * 100
+
+		// Forecasts simple drift + volatility bands for 7/30/90 days (daily)
+		const last = nav[nav.length - 1] || total
+		const drift = mean // daily drift
+		const horizonDays = [7, 30, 90]
+		const forecasts: ForecastPoint[] = []
+		horizonDays.forEach((d) => {
+			const mu = last * Math.pow(1 + drift, d)
+			const sigma = volatilityPct / 100
+			const low = mu * (1 - 1.96 * sigma)
+			const high = mu * (1 + 1.96 * sigma)
+			forecasts.push({ date: `${d}d`, mean: Math.max(0, mu), low: Math.max(0, low), high: Math.max(0, high) })
+		})
+
+		// Anomalies: large tx > 5% AUM, or AUM daily jump > 4%
+		const anomalies: Anomaly[] = []
+		const aum = total
+		state.transactions.forEach(t => {
+			if (t.valueUSD > aum * 0.05) anomalies.push({ id: `tx_${t.id}`, date: t.date, kind: 'TX_LARGE', message: `Large transaction ${t.type} ${t.asset} $${t.valueUSD.toLocaleString()}` })
+		})
+		for (let i = 1; i < nav.length; i++) {
+			const pct = Math.abs((nav[i] - nav[i-1]) / nav[i-1])
+			if (pct > 0.04) anomalies.push({ id: `aum_${i}`, date: new Date(state.navHistory[i].date).getTime() || Date.now(), kind: 'AUM_JUMP', message: `AUM moved ${(pct*100).toFixed(1)}% day-over-day` })
+		}
+
+		set({ risk: { byAssetPct, volatilityPct }, forecasts, anomalies })
+		save()
+	},
+
+	runScenario: () => {
+		const { scenario, assets } = get()
+		const notes: string[] = []
+		const total = assets.reduce((s, a) => s + a.valueUSD, 0)
+		const dropFactor = Math.max(0, 1 - scenario.assetDropPct / 100)
+		const expenseHit = scenario.expenseRisePct / 100 * total * 0.02 // assume 2% monthly burn proxy
+		const riskAssets = assets.filter(a => a.symbol !== 'USDC' && a.symbol !== 'USDT' && a.symbol !== 'DAI')
+		const riskValue = riskAssets.reduce((s, a) => s + a.valueUSD, 0)
+		const projectedAUM = Math.max(0, (riskValue * dropFactor) + (total - riskValue) - expenseHit)
+		notes.push(`Risk assets drop ${scenario.assetDropPct}%`)
+		notes.push(`Expenses rise ${scenario.expenseRisePct}%`) 
+		set({ scenarioResult: { projectedAUM, notes } })
+		save()
+	},
+
+	login: (password) => {
+		const ok = password.trim().length > 0
+		if (ok) set({ isAuthenticated: true }); save();
+		return ok
+	},
+	logout: () => { set({ isAuthenticated: false }); save() },
 }))
 
 function save() {
 	try {
-		const { setAgentConfig, setPolicyConfig, setTargetAllocation, exportConfig, importConfig, refreshSuggestions, simulateRebalance, runPolicy, ...data } = useTreasuryStore.getState() as any
+		const { setAgentConfig, setPolicyConfig, setTargetAllocation, exportConfig, importConfig, refreshSuggestions, simulateRebalance, runPolicy, computeAnalytics, runScenario, login, logout, ...data } = useTreasuryStore.getState() as any
 		localStorage.setItem(persistKey, JSON.stringify(data))
 	} catch {}
 }
