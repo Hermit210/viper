@@ -8,6 +8,7 @@ import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
 import { walletConfig, walletTheme } from './wallet'
+import ErrorBoundary from './components/ErrorBoundary'
 
 const queryClient = new QueryClient()
 
@@ -16,9 +17,11 @@ createRoot(document.getElementById('root')!).render(
     <WagmiProvider config={walletConfig}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider theme={walletTheme}>
-          <div className="app-bg" style={{ maxWidth: '100%', margin: 0 }}>
-            <App />
-          </div>
+          <ErrorBoundary>
+            <div className="app-bg" style={{ maxWidth: '100%', margin: 0 }}>
+              <App />
+            </div>
+          </ErrorBoundary>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
