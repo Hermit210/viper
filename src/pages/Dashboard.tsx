@@ -27,15 +27,15 @@ function Dashboard() {
 			<div className="grid-kpis" style={{ marginBottom: 16 }}>
 				<div className="panel kpi" style={{ padding: 12 }}>
 					<div className="label">Total Treasury</div>
-					<div className="value">${kpis.totalAUM.toLocaleString()}</div>
+					<div className="value tooltip" data-tip="Sum of all asset values in USD">${kpis.totalAUM.toLocaleString()}</div>
 				</div>
 				<div className="panel kpi" style={{ padding: 12 }}>
 					<div className="label">24h PnL</div>
-					<div className="value">${kpis.last24hPnL.toLocaleString()}</div>
+					<div className="value tooltip" data-tip="Change in AUM over last 24 hours">${kpis.last24hPnL.toLocaleString()}</div>
 				</div>
 				<div className="panel kpi" style={{ padding: 12 }}>
 					<div className="label">Cash</div>
-					<div className="value">${kpis.cashBalance.toLocaleString()}</div>
+					<div className="value tooltip" data-tip="Stable holdings used as reserve">${kpis.cashBalance.toLocaleString()}</div>
 				</div>
 				<div className="panel kpi" style={{ padding: 12 }}>
 					<div className="label">Risk</div>

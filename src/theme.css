@@ -19,6 +19,7 @@
 	--primary: #60a5fa;
 	--primary-2: #22d3ee;
 	--danger: #ef4444;
+	--container-max: 1200px;
 }
 
 /* Theme variants */
@@ -221,6 +222,38 @@
 
 .app-grid { display: grid; grid-template-columns: 240px 1fr; }
 @media (max-width: 900px) { .app-grid { grid-template-columns: 1fr; } .sidebar { position: fixed; } .topbar { position: sticky; top: 0; z-index: 20; } }
+
+/* Constrain content width */
+.page > .border-gradient > div { max-width: var(--container-max); margin: 0 auto; }
+
+/* Typography scale */
+h1 { font-size: 2rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.2rem; }
+
+/* Card hover already defined; make subtle hover for tables rows */
+.table tr:hover td { background: rgba(96,165,250,0.04); }
+
+/* Tooltip utility */
+.tooltip {
+	position: relative;
+	cursor: help;
+}
+.tooltip:hover::after {
+	content: attr(data-tip);
+	position: absolute;
+	left: 0;
+	top: 100%;
+	margin-top: 6px;
+	white-space: nowrap;
+	background: #0d1324;
+	color: white;
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	padding: 6px 8px;
+	font-size: 12px;
+	z-index: 50;
+}
 
 /* Mobile typography and spacing tweaks */
 @media (max-width: 600px) {
