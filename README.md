@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # DAO Treasury Management – Intelligent Agents, Allocation Automation, Reporting
 
 A Vite + React + TypeScript frontend built for DoraHacks AI Treasury Management hackathon tracks. It demonstrates:
@@ -78,3 +79,7 @@ npm run build
 - Automation: targets, preview, rebalance
 - Reporting: table + CSV
 - On-chain: wallet connect, chain KPIs, ERC‑20 balances
+=======
+# viper
+DAO Treasury management
+>>>>>>> 499391fa9505e043bbe07fa528600d0877506db5
