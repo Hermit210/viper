@@ -1,16 +1,32 @@
-# DAO Treasury Management – Intelligent Agents, Automation, Reporting, On-Chain
+# DAO Management – Advanced AI Agents for Midnight Blockchain
 
-Viper Treasury is a Vite + React + TypeScript app for the DoraHacks AI Treasury Management track. It demonstrates:
+Viper is an advanced AI-powered dao management system built for the DEGA Hackathon on DoraHacks. This sophisticated platform demonstrates cutting-edge AI capabilities for DAO optimization:
 
-- Intelligent agents with explainable policy decisions (constraints + risk)
-- Portfolio automation (targets, execution preview, one-click rebalance)
-- Forecasting (7/30/90-day) with confidence bands
-- Risk metrics (exposure by asset, volatility)
-- Anomaly detection (large tx, AUM jumps) with alerts
-- Scenario simulation (what-if asset drawdown, expense rise)
-- Reporting (transaction history + CSV)
-- Wallet connect + on-chain ERC-20 balances
-- Simple auth (login + route guard)
+## 🧠 Advanced AI Features
+
+- **ML-Enhanced Portfolio Optimization**: Machine learning algorithms for dynamic asset allocation
+- **Market Sentiment Analysis**: Real-time sentiment scoring and fear/greed index integration
+- **Intelligent Risk Management**: AI-driven risk assessment with confidence scoring
+- **Predictive Analytics**: Advanced forecasting with volatility bands and correlation analysis
+- **Anomaly Detection**: Smart detection of unusual transactions and market movements
+- **Explainable AI Decisions**: Transparent reasoning for all AI recommendations
+- **Automated Rebalancing**: Threshold-based portfolio rebalancing with ML optimization
+- **Stress Testing**: Comprehensive scenario analysis with Value-at-Risk calculations
+
+## 🏛️ DAO Governance Integration
+
+- **Proposal System**: Create and vote on treasury management proposals
+- **Governance Mode**: Full DAO integration for decentralized decision making
+- **Voting Mechanisms**: Weighted voting with real-time results
+- **Policy Enforcement**: AI-enforced governance policies and constraints
+
+## 📊 Advanced Analytics
+
+- **Risk Metrics Dashboard**: Comprehensive risk profiling and monitoring
+- **Correlation Analysis**: Asset correlation matrices and diversification insights
+- **Momentum Signals**: ML-generated momentum indicators for each asset
+- **Liquidity Scoring**: Real-time liquidity assessment for all holdings
+- **Performance Attribution**: Detailed analysis of portfolio performance drivers
 
 ## Getting Started
 
@@ -39,24 +55,46 @@ npm run build
 
 ## Pages & Features
 
-- Dashboard
-  - KPIs: AUM, 24h PnL, cash, risk level; wallet KPIs after connect
-  - NAV chart; Risk exposure by asset; volatility
-  - Forecasts (7/30/90d) with mean/low/high bands
-  - On-chain balances (supported chains)
-- Allocation
-  - Current vs Target; Simulate Rebalance
-  - Policy Execution Preview (from explainable decisions)
-- Agents
-  - Risk tolerance, Stable Reserve, Momentum toggles
-  - Policy constraints: Min stable reserve, Max single-asset weight
-  - Run Policy: generates decisions + explainable log
-  - Export/Import config (agent/policy/targets)
-- Scenario
-  - What-if: asset drop %, expense rise % → projected AUM + notes
-- Reports
-  - Transaction history table; CSV export
-  - Anomaly alerts (large tx, AUM jumps)
+- **Dashboard**
+  - Enhanced KPIs: AUM, 24h PnL, AI confidence, market sentiment
+  - NAV chart with advanced forecasting
+  - Real-time AI alerts and insights
+  - Risk exposure analysis with correlation data
+  - On-chain balances (multi-chain support)
+
+- **Intelligent Agents**
+  - Advanced AI configuration: ML optimization, sentiment analysis
+  - Enhanced policy constraints with risk limits
+  - AI-powered decision engine with confidence scoring
+  - Market intelligence integration
+  - Real-time AI insights generation
+  - DAO governance panel with proposal system
+
+- **AI Analytics Dashboard**
+  - Comprehensive market intelligence visualization
+  - Advanced risk metrics radar charts
+  - Momentum signal analysis
+  - AI insight management and recommendations
+  - Stress testing with Value-at-Risk calculations
+  - Correlation matrix visualization
+
+- **Allocation Management**
+  - AI-optimized target allocation suggestions
+  - Smart rebalancing with ML-enhanced execution
+  - Policy execution preview with risk assessment
+  - Dynamic threshold management
+
+- **Scenario Analysis**
+  - Advanced stress testing with multiple risk metrics
+  - Value-at-Risk and Expected Shortfall calculations
+  - Maximum drawdown analysis
+  - Sharpe ratio optimization
+  - AI-generated recommendations based on scenario results
+
+- **Reports & Analytics**
+  - Enhanced transaction history with anomaly detection
+  - Advanced CSV export with risk metrics
+  - Real-time alert system for portfolio events
 
 ## Forecasts, Risk, and Anomalies (How it works)
 - Forecasts: simple drift from NAV changes with volatility bands for 7/30/90 days
@@ -66,21 +104,26 @@ npm run build
 ## Auth
 Basic demo login with route guard. For production, replace with OAuth or wallet-gated auth.
 
-## Demo Script (3–5 minutes)
-1) Connect wallet → Dashboard shows address/chain/balance + on-chain balances
-2) Agents → set constraints → Run Policy → view explainable decisions
-3) Allocation → see Policy Execution Preview → Simulate Rebalance
-4) Dashboard → show Risk Exposure and Forecasts (confidence bands)
-5) Scenario → enter asset drop/expense rise → run and review projected AUM
-6) Reports → export CSV and view anomaly alerts
-7) Toggle Danger Mode and show responsive sidebar on mobile
+## Demo Script (5–7 minutes)
+1) **Dashboard Overview** → Show enhanced KPIs, AI confidence, market sentiment, real-time alerts
+2) **AI Agents Configuration** → Enable ML optimization, sentiment analysis, governance mode
+3) **Run AI Policy Engine** → Demonstrate advanced decision making with confidence scores and market analysis
+4) **AI Analytics Dashboard** → Show momentum signals, risk radar, correlation analysis, AI insights
+5) **DAO Governance** → Create proposal, demonstrate voting mechanism
+6) **Advanced Scenario Analysis** → Run stress test with VaR calculations and AI recommendations
+7) **Portfolio Optimization** → Use ML-powered optimization and view explainable results
+8) **Market Intelligence** → Show real-time sentiment, fear/greed index, liquidity scores
+9) **Anomaly Detection** → Demonstrate smart alerts and risk monitoring
 
-## Track Alignment
-- Intelligent agents: policy engine + explainable decisions
-- Automation: target weights, previews, and rebalance
-- Risk & analytics: forecasting, exposure, volatility, anomalies
-- Reporting: table + CSV
-- On-chain readiness: wallets + balances
+## DEGA Hackathon Alignment
+- **Advanced AI Agents**: ML-powered portfolio optimization with explainable decisions
+- **Market Intelligence**: Real-time sentiment analysis and momentum signals  
+- **Risk Management**: Comprehensive risk metrics including VaR and stress testing
+- **DAO Integration**: Full governance system with proposal and voting mechanisms
+- **Automation**: Smart rebalancing with AI-driven thresholds and execution
+- **Analytics**: Advanced forecasting, correlation analysis, and anomaly detection
+- **Midnight Blockchain Ready**: Designed for integration with Midnight's privacy features
+- **Scalable Architecture**: Built for enterprise-grade DAO management
 
 ## Tech Stack
 - React + TypeScript + Vite

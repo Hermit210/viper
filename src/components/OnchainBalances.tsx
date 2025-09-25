@@ -91,30 +91,35 @@ function OnchainBalances() {
 	})
 
 	return (
-		<div className="panel" style={{ padding: 12 }}>
-			<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-				<div style={{ fontWeight: 600 }}>On-chain Balances</div>
-				{isFetching && <div className="subtle" style={{ fontSize: 12 }}>Loading…</div>}
+		<div className="panel">
+			<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+				<h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)' }}>on-chain balances</h3>
+				{isFetching && <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>loading…</div>}
 			</div>
-			<div className="table-wrap" style={{ marginTop: 8 }}>
-				<table className="table">
-					<thead>
-						<tr>
-							<th>Token</th>
-							<th>Address</th>
-							<th>Balance</th>
-						</tr>
-					</thead>
-					<tbody>
-						{rows.map((r) => (
-							<tr key={r.address}>
-								<td>{r.symbol}</td>
-								<td>{r.address.slice(0, 6)}…{r.address.slice(-4)}</td>
-								<td>{formatAmount(r.balance, r.decimals)}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
+			<div style={{ display: 'grid', gap: 8 }}>
+				{rows.map((r) => (
+					<div key={r.address} style={{ 
+						display: 'flex', 
+						justifyContent: 'space-between', 
+						alignItems: 'center',
+						padding: '8px 0',
+						borderBottom: '1px solid var(--border-primary)'
+					}}>
+						<div>
+							<div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{r.symbol}</div>
+							<div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+								{r.address.slice(0, 6)}…{r.address.slice(-4)}
+							</div>
+						</div>
+						<div style={{ 
+							fontWeight: 600, 
+							color: 'var(--primary-orange)',
+							textAlign: 'right'
+						}}>
+							{formatAmount(r.balance, r.decimals)}
+						</div>
+					</div>
+				))}
 			</div>
 		</div>
 	)
