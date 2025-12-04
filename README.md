@@ -2,7 +2,7 @@
 
 Viper is an advanced AI-powered dao management system built for the DEGA Hackathon on DoraHacks. This sophisticated platform demonstrates cutting-edge AI capabilities for DAO optimization:
 
-## 🧠 Advanced AI Features
+##  Advanced AI Features
 
 - **ML-Enhanced Portfolio Optimization**: Machine learning algorithms for dynamic asset allocation
 - **Market Sentiment Analysis**: Real-time sentiment scoring and fear/greed index integration
@@ -13,14 +13,14 @@ Viper is an advanced AI-powered dao management system built for the DEGA Hackath
 - **Automated Rebalancing**: Threshold-based portfolio rebalancing with ML optimization
 - **Stress Testing**: Comprehensive scenario analysis with Value-at-Risk calculations
 
-## 🏛️ DAO Governance Integration
+##  DAO Governance Integration
 
 - **Proposal System**: Create and vote on treasury management proposals
 - **Governance Mode**: Full DAO integration for decentralized decision making
 - **Voting Mechanisms**: Weighted voting with real-time results
 - **Policy Enforcement**: AI-enforced governance policies and constraints
 
-## 📊 Advanced Analytics
+##  Advanced Analytics
 
 - **Risk Metrics Dashboard**: Comprehensive risk profiling and monitoring
 - **Correlation Analysis**: Asset correlation matrices and diversification insights
