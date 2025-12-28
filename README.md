@@ -125,13 +125,6 @@ Basic demo login with route guard. For production, replace with OAuth or wallet-
 - **Midnight Blockchain Ready**: Designed for integration with Midnight's privacy features
 - **Scalable Architecture**: Built for enterprise-grade DAO management
 
-## Tech Stack
-- React + TypeScript + Vite
-- React Router
-- Zustand (state)
-- Recharts (charts)
-- PapaParse (CSV export)
-- wagmi + RainbowKit (wallet)
 
 ## Notes
 This is a frontend-focused demo. Replace mock analytics and policy execution with real services or on-chain calls for production.
