@@ -126,5 +126,4 @@ Basic demo login with route guard. For production, replace with OAuth or wallet-
 - **Scalable Architecture**: Built for enterprise-grade DAO management
 
 
-## Notes
-This is a frontend-focused demo. Replace mock analytics and policy execution with real services or on-chain calls for production.
+
